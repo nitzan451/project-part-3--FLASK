@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>חיזוי שכר דירה | מחשבון מתקדם</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(120deg, #b7e3fa 0%, #e9f6fe 100%);
+      font-family: 'Assistant', 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .form-section {
+      max-width: 670px;
+      margin: 60px auto 0 auto;
+      padding: 38px 34px 34px 34px;
+      background: rgba(255,255,255,0.98);
+      border-radius: 24px;
+      box-shadow: 0 6px 36px 6px #4eb6e936;
+      position: relative;
+    }
+    .form-section h2 {
+      text-align: center;
+      margin-bottom: 6px;
+      font-weight: bold;
+      font-size: 2.1rem;
+      color: #1b3566;
+      letter-spacing: 1.5px;
+      text-shadow: 0 1px 4px #e6f1fc3a;
+    }
+    .form-section .subtitle {
+      text-align: center;
+      font-size: 1.10rem;
+      color: #3b6da1;
+      margin-bottom: 23px;
+      font-weight: 400;
+    }
+    label.form-label { font-weight: 500; color: #365ba5; }
+    .form-select, .form-control {
+      border-radius: 12px;
+      font-size: 1rem;
+      padding: 9px 13px;
+      border: 1px solid #c9e4fa;
+      background: #fafdff;
+      margin-top: 4px;
+    }
+    .form-select:focus, .form-control:focus {
+      border-color: #58a7ec;
+      box-shadow: 0 2px 12px #8bcefd28;
+    }
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px 13px;
+      margin-top: 8px;
+      margin-bottom: 6px;
+    }
+    .form-check-label { font-size: 0.99rem; color: #496692; }
+    .form-check-input:checked {
+      background-color: #45aee7;
+      border-color: #3683d6;
+      box-shadow: 0 2px 6px #79c7fd29;
+    }
+    .btn-primary {
+      background: linear-gradient(90deg, #2196f3 60%, #55d6fb 100%);
+      border: none;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 13px 0;
+      border-radius: 18px;
+      font-size: 1.19rem;
+      box-shadow: 0 2px 14px #44a9e836;
+    }
+    .alert-success {
+      background: linear-gradient(92deg, #bbfae4 50%, #e8f6ff 100%);
+      border-radius: 16px;
+      border: none;
+      box-shadow: 0 2px 11px #6bddc01a;
+      font-weight: 700;
+      color: #278cd3;
+      font-size: 1.45rem;
+      padding: 24px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .alert-success strong {
+      font-size: 2.2rem;
+      color: #08356c;
+      font-weight: 900;
+    }
+    .alert-danger {
+      background-color: #ffe8e8;
+      border: 1px solid #ffb0b0;
+      border-radius: 12px;
+      color: #cc0000;
+      text-align: center;
+      font-weight: bold;
+      padding: 16px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="form-section">
+  <h2><i class="ri-building-4-fill"></i> מחשבון שכר דירה</h2>
+  <div class="subtitle">גלה בקליק מה שכר הדירה המוערך לדירה שלך בתל אביב</div>
+    
+  <form method="POST" autocomplete="off">
+   <!--שדה סוג נכס-->
+    <div class="mb-3">
+      <label for="property_type" class="form-label">
+        <i class="ri-home-4-line"></i> סוג הנכס
+      </label>
+      <select id="property_type" name="property_type" class="form-select" required>
+        <option value="" disabled {% if not form_data.property_type %}selected{% endif %}>בחר סוג</option>
+        <option value="דירה" {% if form_data.property_type == 'דירה' %}selected{% endif %}>דירה</option>
+        <option value="דירת גן" {% if form_data.property_type == 'דירת גן' %}selected{% endif %}>דירת גן</option>
+        <option value="סטודיו/לופט" {% if form_data.property_type == 'סטודיו/לופט' %}selected{% endif %}>סטודיו/לופט</option>
+        <option value="יחידת דיור" {% if form_data.property_type == 'יחידת דיור' %}selected{% endif %}>יחידת דיור</option>
+        <option value="קוטג'" {% if form_data.property_type == "קוטג'" %}selected{% endif %}>קוטג'</option>
+        <option value="גג/פנטהאוז" {% if form_data.property_type == 'גג/פנטהאוז' %}selected{% endif %}>גג/פנטהאוז</option>
+      </select>
+
+      {% if field_errors.property_type %}
+        <div class="text-danger mt-1">{{ field_errors.property_type }}</div>
+      {% endif %}
+    </div>
+
+    <!-- שדה שכונה -->
+    <div class="mb-3">
+      <label for="neighborhood" class="form-label">
+       <i class="ri-community-line"></i> שכונה
+      </label>
+      <select id="neighborhood" name="neighborhood" class="form-select">
+        <option value="">בחר שכונה</option>
+      {% for option in neighborhoods %}
+      <option value="{{ option }}" {% if form_data.neighborhood == option %}selected{% endif %}>{{ option }}</option>
+      {% endfor %}
+      </select>
+    </div>
+
+    <!-- שדה כתובת -->
+    <div class="mb-3">
+        <label for="address" class="form-label">
+         <i class="ri-map-pin-line"></i> כתובת (רחוב)
+        </label>
+        <input type="text" class="form-control" id="address" name="address"
+               placeholder="לדוגמה: דיזנגוף 112"
+              value="{{ form_data.address or '' }}">
+        {% if field_errors.address %}
+          <div class="text-danger mt-1">{{ field_errors.address }}</div>
+        {% endif %}
+    </div>
+
+
+    <!-- מספר חדרים -->
+    <div class="mb-3">
+      <label for="room_number" class="form-label">
+       <i class="ri-door-line"></i> מספר חדרים
+      </label>
+      <input type="number" class="form-control" id="room_number" name="room_number"
+             value="{{ form_data.room_number or '' }}" min="1" max="10" step="0.5">
+      {% if field_errors.room_number %}
+        <div class="text-danger mt-1">{{ field_errors.room_number }}</div>
+      {% endif %}
+    </div>
+
+    <!-- קומה וסה"כ קומות -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="floor" class="form-label">
+         <i class="ri-building-line"></i> קומה
+        </label>
+        <input type="number" class="form-control" id="floor" name="floor"
+               value="{{ form_data.floor or '' }}" min="0" max="50">
+        {% if field_errors.floor %}
+          <div class="text-danger mt-1">{{ field_errors.floor }}</div>
+        {% endif %}
+      </div>
+      <div class="col-md-6">
+        <label for="total_floors" class="form-label">
+         <i class="ri-building-2-line"></i> סה"כ קומות
+        </label>
+        <input type="number" class="form-control" id="total_floors" name="total_floors"
+               value="{{ form_data.total_floors or '' }}" min="1" max="100">
+        {% if field_errors.total_floors %}
+          <div class="text-danger mt-1">{{ field_errors.total_floors }}</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- שטח, גינה -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="area" class="form-label">
+          <i class="ri-ruler-2-line"></i> שטח בנוי (מ"ר)
+        </label>
+        <input type="number" class="form-control" id="area" name="area"
+               value="{{ form_data.area or '' }}" min="10" max="1000">
+        {% if field_errors.area %}
+          <div class="text-danger mt-1">{{ field_errors.area }}</div>
+        {% endif %}
+      </div>
+      <div class="col-md-6">
+        <label for="garden_area" class="form-label">
+         <i class="ri-leaf-line"></i> שטח גינה (מ"ר)
+        </label>
+        <input type="number" class="form-control" id="garden_area" name="garden_area"
+               value="{{ form_data.garden_area or '' }}" min="0" max="500">
+      </div>
+    </div>
+
+    <!-- ארנונה ועד בית -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="monthly_arnona" class="form-label">
+          <i class="ri-file-list-3-line"></i> ארנונה חודשית (ש"ח)
+        </label>
+        <input type="number" class="form-control" id="monthly_arnona" name="monthly_arnona"
+               value="{{ form_data.monthly_arnona or '' }}" min="0">
+      </div>
+      <div class="col-md-6">
+        <label for="building_tax" class="form-label">
+         <i class="ri-service-line"></i> ועד בית (ש"ח)
+        </label>  
+        <input type="number" class="form-control" id="building_tax" name="building_tax"
+               value="{{ form_data.building_tax or '' }}" min="0">
+      </div>
+    </div>
+
+    <!-- מאפיינים לפי תמונה -->
+    <div class="mb-3">
+      <label class="form-label"><i class="ri-star-line"></i> מאפיינים</label>
+      <div class="checkbox-grid">
+        {% set feature_labels = ['מזגן', 'ממ"ד', 'נגישות', 'מעלית', 'מרפסת שמש', 'משופצת',
+                                 'חניה', 'מרפסת', 'סורגים', 'מחסן', 'מרוהטת', 'על עמודים'] %}
+        {% for feature in feature_labels %}
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="features" value="{{ feature }}"
+                 {% if feature in form_data.features %}checked{% endif %}>
+          <label class="form-check-label">{{ feature }}</label>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- כפתור שליחה -->
+    <div class="d-grid mt-4">
+      <button type="submit" class="btn btn-primary btn-lg"><i class="ri-calculator-line" style="margin-left:7px"></i>חשב שכר דירה</button>
+    </div>
+    <div class="d-grid mt-2">
+      <button type="button" class="btn btn-outline-secondary btn-lg" onclick="window.location.href='/'">
+      <i class="ri-refresh-line" style="margin-left:7px"></i>ניקוי טופס
+      </button>
+    </div>
+  </form>
+
+  {% if prediction is not none %}
+    <div class="alert alert-success mt-4">
+      <i class="ri-coins-line"></i>
+      שכר דירה חזוי: <strong>{{ prediction }} ₪</strong>
+    </div>
+  {% elif error %}
+    <div class="alert alert-danger">
+      <i class="ri-error-warning-line"></i> שגיאה: אין מספיק ערכים לחיזוי
+    </div>
+  {% endif %}
+</div>
+
+<script>
+function toggleCustomField(selectElement, containerId) {
+  document.getElementById(containerId).style.display =
+    selectElement.value === 'אחר' ? 'block' : 'none';
+}
+</script>
+
+</body>
+</html>
